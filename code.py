@@ -10,6 +10,43 @@ import stage
 import constants
 
 
+def menu_scene():
+    # this function is the main menu scene
+
+    # image banks for CircuitPython 
+    image_bank_mt_background = stage.Bank.from_bmp16("mt_game_studio.bmp")
+    
+    #add text objects
+    text = []
+    text1 = stage.Text(width=29, height=12, font=None, palette=constants.RED_PALETTE, buffer=None)
+    text1.move(20, 10)
+    text1.text("MT Game Studios")
+    text.append(text1)
+    
+    text2 = stage.Text(width=29, height=12, font=None, palette=constants.RED_PALETTE, buffer=None)
+    text2.move(40, 110)
+    text2.text("PRESS START")
+    text.append(text2)
+    
+    background = stage.Grid(image_bank_mt_background, constants.SCREEN_X,
+                            constants.SCREEN_Y)
+
+    game = stage.Stage(ugame.display, constants.FPS)
+    game.layers = text + [background]
+    game.render_block()
+    
+    # repeat forever, game loop
+    while True:
+        # get user input
+        keys = ugame.buttons.get_pressed()
+
+        if keys & ugame.K_START != 0:
+            game_scene()
+      
+        # update game logic
+        game.tick()
+
+
 def game_scene():
     # this function is the main game scene
 
@@ -61,9 +98,9 @@ def game_scene():
         if keys & ugame.K_O != 0:
             pass
         if keys & ugame.K_START != 0:
-            print("Start")
+            pass
         if keys & ugame.K_SELECT != 0:
-            print("Select")
+            pass
         
         if keys & ugame.K_RIGHT != 0:
             if ship.x < (constants.SCREEN_X - constants.SPRITE_SIZE):
@@ -91,8 +128,5 @@ def game_scene():
         game.tick()
 
 if __name__ == "__main__":
-    game_scene()
+    menu_scene()
     
-
-
-
